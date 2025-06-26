@@ -1,0 +1,11 @@
+{
+  "domain": "volet_virtuel_io",
+  "name": "Volet Virtuel IO",
+  "version": "0.1.0",
+  "documentation": "https://github.com/UTILISATEUR/ha-volet-virtuel-io",
+  "issue_tracker": "https://github.com/UTILISATEUR/ha-volet-virtuel-io/issues",
+  "codeowners": ["@UTILISATEUR"],
+  "iot_class": "local_polling",
+  "dependencies": [],
+  "requirements": []
+}
