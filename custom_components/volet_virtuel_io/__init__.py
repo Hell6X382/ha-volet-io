@@ -1,51 +1,40 @@
 """The Volet Virtuel IO integration."""
-import asyncio
+import logging
 
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.config_entries import ConfigEntry
 
-# Pour l'instant, notre intégration ne gère pas les entrées de configuration via l'interface utilisateur (config flow).
-# Si nous ajoutions cela, nous devrions définir les plateformes ici.
-# Exemple: PLATFORMS = ["cover"]
+_LOGGER = logging.getLogger(__name__)
+
+# Notre intégration est configurée via YAML (platform cover), donc pas de plateformes à définir ici pour config_flow pour l'instant.
+# PLATFORMS = ["cover"]
 
 async def async_setup(hass: HomeAssistant, config: dict):
-    """Set up the Volet Virtuel IO component from YAML configuration."""
-    # Cette fonction est appelée si l'intégration est définie dans configuration.yaml
-    # (ce qui est notre cas car nous allons définir une plateforme cover).
-    # Nous n'avons rien de spécifique à initialiser au niveau global de l'intégration ici,
-    # car la configuration de la plateforme cover sera gérée par async_setup_platform dans cover.py.
-    hass.data.setdefault("volet_virtuel_io", {})
+    """Set up the Volet Virtuel IO component from YAML (not used for config flow)."""
+    # Si l'intégration avait une configuration globale dans configuration.yaml (pas juste une plateforme),
+    # elle serait traitée ici. Pour une plateforme, c'est async_setup_platform dans cover.py qui gère.
+    _LOGGER.debug("Volet Virtuel IO - async_setup: Initialisation via YAML gérée par la plateforme cover.")
+    hass.data.setdefault("volet_virtuel_io", {}) # Espace pour stocker des données globales si besoin un jour.
     return True
 
 
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
-    """Set up Volet Virtuel IO from a config entry."""
-    # Cette fonction est appelée si l'intégration est configurée via l'interface utilisateur.
-    # Nous ne l'utilisons pas pour l'instant, mais il est bon de l'avoir pour le futur.
-    # Si nous avions des plateformes à charger (ex: cover), nous le ferions ici:
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Set up Volet Virtuel IO from a config entry (UI configuration)."""
+    # Cette fonction est pour la configuration via l'interface utilisateur.
+    # Nous ne l'implémentons pas activement pour cette version (YAML uniquement).
+    _LOGGER.debug(f"Volet Virtuel IO - async_setup_entry: Non implémenté pour l'entrée {entry.entry_id}. Utiliser la configuration YAML.")
+    # Si on supportait les plateformes via config_flow:
     # hass.config_entries.async_setup_platforms(entry, PLATFORMS)
-    _LOGGER.debug(f"Async_setup_entry pour volet_virtuel_io - non implémenté pour {entry.entry_id}")
-    return True # Doit retourner True pour une initialisation réussie, même si vide.
+    return True # Indique le succès même si rien n'est fait.
 
 
-async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    # Cette fonction est appelée lors du déchargement d'une entrée de configuration.
+    # Gérer le déchargement si on utilisait config_flow et les plateformes.
+    _LOGGER.debug(f"Volet Virtuel IO - async_unload_entry: Non implémenté pour l'entrée {entry.entry_id}.")
     # Exemple:
-    # unloaded = all(
-    #     await asyncio.gather(
-    #         *[
-    #             hass.config_entries.async_forward_entry_unload(entry, platform)
-    #             for platform in PLATFORMS
-    #         ]
-    #     )
-    # )
+    # unloaded = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     # if unloaded:
     #     hass.data["volet_virtuel_io"].pop(entry.entry_id)
     # return unloaded
-    _LOGGER.debug(f"Async_unload_entry pour volet_virtuel_io - non implémenté pour {entry.entry_id}")
-    return True # Doit retourner True pour un déchargement réussi.
-
-# Ajouter un logger si on utilise _LOGGER dans les fonctions ci-dessus
-import logging
-_LOGGER = logging.getLogger(__name__)
+    return True
