@@ -9,11 +9,8 @@ from homeassistant.components.cover import (
     ATTR_POSITION,
     DEVICE_CLASS_SHUTTER,
     PLATFORM_SCHEMA as COVER_PLATFORM_SCHEMA, # Renamed to avoid conflict
-    SUPPORT_CLOSE,
-    SUPPORT_OPEN,
-    SUPPORT_SET_POSITION,
-    SUPPORT_STOP,
     CoverEntity,
+    CoverEntityFeature,
 )
 from homeassistant.const import (
     CONF_NAME,
@@ -105,7 +102,7 @@ class VirtualIOCover(CoverEntity, RestoreEntity):
         self._attr_unique_id = f"volet_virtuel_io_{name.lower().replace(' ', '_')}"
         self._attr_device_class = DEVICE_CLASS_SHUTTER
         self._attr_supported_features = (
-            SUPPORT_OPEN | SUPPORT_CLOSE | SUPPORT_STOP | SUPPORT_SET_POSITION
+            CoverEntityFeature.OPEN | CoverEntityFeature.CLOSE | CoverEntityFeature.STOP | CoverEntityFeature.SET_POSITION
         )
 
     async def async_added_to_hass(self):
